@@ -10,22 +10,21 @@ public class FreelanceService {
      * @param threshold - минимальная сумма для отдыха (руб.)
      * @return количество месяцев отдыха (от 0 до 12)
      */
-    public int calculate (int income, int expenses, int threshold) {
-        int count = 0;    // Счётчик месяцев отдыха
-        int money = 0;     // Текущие накопления
+    public int calculate(int income, int expenses, int threshold) {
+        int count = 0;
+        int money = 0;
 
         for (int month = 1; month <= 12; month++) {
-            if (money >= threshold) {
-                // Отдых: тратим `expenses`, затем уменьшаем остаток в 3 раза
-                money -= expenses;
-                money /= 3;
+            if (threshold == 0 || money >= threshold) {
                 count++;
+                money -= expenses;
+                if (threshold > 0) { // Делаем деление только при положительном пороге
+                    money /= 3;
+                }
             } else {
-                // Работа: зарабатываем `income`, тратим `expenses`
                 money += income - expenses;
             }
         }
-
         return count;
     }
 }
